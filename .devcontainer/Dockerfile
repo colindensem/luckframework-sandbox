@@ -1,7 +1,7 @@
 ARG VARIANT=0.35.1
 FROM crystallang/crystal:${VARIANT}-alpine
 RUN apk update \
-    && apk add --no-cache gnupg tmux bash postgresql-client nodejs yarn
+    && apk add --no-cache gnupg tmux bash postgresql-client nodejs yarn openssh
 
 RUN cd /tmp \
     && git clone https://github.com/luckyframework/lucky_cli \
