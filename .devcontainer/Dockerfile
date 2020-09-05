@@ -1,7 +1,11 @@
 ARG VARIANT=0.35.1
 FROM crystallang/crystal:${VARIANT}-alpine
-RUN apk update \
-    && apk add --no-cache gnupg tmux bash postgresql-client nodejs yarn openssh
+
+RUN apk update && apk upgrade \
+    && echo @latest-stable http://nl.alpinelinux.org/alpine/latest-stable/community >> /etc/apk/repositories \
+    && echo @latest-stable http://nl.alpinelinux.org/alpine/latest-stable/main >> /etc/apk/repositories \
+    && apk add --no-cache gnupg tmux bash postgresql-client nodejs yarn openssh \
+    chromium-chromedriver@latest-stable chromium@latest-stable
 
 RUN cd /tmp \
     && git clone https://github.com/luckyframework/lucky_cli \
@@ -16,5 +20,13 @@ RUN cd /tmp \
     && gunzip -d overmind-v2.2.0-linux-amd64.gz \
     && chmod a+x overmind-v2.2.0-linux-amd64 \
     && mv overmind-v2.2.0-linux-amd64 /usr/local/bin/overmind
+
+# Clean up leftovers.
+RUN rm -rf /var/cache/apk/* \
+    /tmp/*
+
+# Set the environment variables for the Chromium browser.
+ENV CHROME_BIN=/usr/bin/chromium-browser \
+    CHROME_PATH=/usr/lib/chromium/
 
 EXPOSE 5000
