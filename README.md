@@ -12,6 +12,7 @@ Run all commands from the integrated terminal.
 1. Update database settings in `config/database.cr`
 1. Run `script/setup`
 1. Run `lucky dev` to start the app
+1. Open `localhost:3001` to view the app
 
 ### Testing
 

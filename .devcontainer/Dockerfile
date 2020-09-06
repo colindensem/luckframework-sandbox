@@ -1,11 +1,14 @@
 ARG VARIANT=0.35.1
-FROM crystallang/crystal:${VARIANT}-alpine
+FROM crystallang/crystal:${VARIANT}
 
-RUN apk update && apk upgrade \
-    && echo @latest-stable http://nl.alpinelinux.org/alpine/latest-stable/community >> /etc/apk/repositories \
-    && echo @latest-stable http://nl.alpinelinux.org/alpine/latest-stable/main >> /etc/apk/repositories \
-    && apk add --no-cache gnupg tmux bash postgresql-client nodejs yarn openssh \
-    chromium-chromedriver@latest-stable chromium@latest-stable
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+    apt update && apt install -y \
+    gnupg tmux bash postgresql-client nodejs yarn wget curl \
+    chromium-chromedriver chromium-browser \
+    libgconf-2-4 libreadline-dev && \
+    # Cleanup leftovers
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN cd /tmp \
     && git clone https://github.com/luckyframework/lucky_cli \
@@ -20,10 +23,6 @@ RUN cd /tmp \
     && gunzip -d overmind-v2.2.0-linux-amd64.gz \
     && chmod a+x overmind-v2.2.0-linux-amd64 \
     && mv overmind-v2.2.0-linux-amd64 /usr/local/bin/overmind
-
-# Clean up leftovers.
-RUN rm -rf /var/cache/apk/* \
-    /tmp/*
 
 # Set the environment variables for the Chromium browser.
 ENV CHROME_BIN=/usr/bin/chromium-browser \

@@ -12,12 +12,12 @@ services:
       # [Optional] You can use build args to set options. e.g. 'VARIANT' below affects the image in the Dockerfile
       args:
         VARIANT: 0.35.1
-
     volumes:
       - ..:/workspace
-
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
+    ports:
+      - "3001:3001"
     links:
       - db
 
