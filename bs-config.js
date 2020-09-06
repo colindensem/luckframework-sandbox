@@ -22,5 +22,6 @@ module.exports = {
   ghostMode: false,
   ui: false,
   online: false,
-  logConnections: false
+  logConnections: false,
+  proxy: "localhost"
 };

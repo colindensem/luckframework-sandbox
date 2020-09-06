@@ -5,7 +5,7 @@ RUN apk update && apk upgrade \
     && echo @latest-stable http://nl.alpinelinux.org/alpine/latest-stable/community >> /etc/apk/repositories \
     && echo @latest-stable http://nl.alpinelinux.org/alpine/latest-stable/main >> /etc/apk/repositories \
     && apk add --no-cache gnupg tmux bash postgresql-client nodejs yarn openssh \
-    chromium-chromedriver@latest-stable chromium@latest-stable
+    chromium-chromedriver@latest-stable chromium@latest-stable lsof procps
 
 RUN cd /tmp \
     && git clone https://github.com/luckyframework/lucky_cli \
